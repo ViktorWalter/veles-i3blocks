@@ -44,6 +44,30 @@ try:
             print("device busy")
             exit(1)
 
+        reg_multipliers = {
+                "T": 0.1,  # 
+                "T_F": 0.1,  # deg F
+                "RH": 1,  # %, from SHT4x
+                "CO2": 1,  # ppm
+                "VOC_INDEX": 1,  # VOC index as calculated by Sensirion library (1 to 500, average 100)
+                "VOC_TICKS": 1,  # raw VOC ticks
+                "PMC_MASS_1_0": 1,  # ug / m^3
+                "PMC_MASS_2_5": 1,  # ug / m^3
+                "PMC_MASS_4_0": 1,  # ug / m^3
+                "PMC_MASS_10_0": 1,  # ug / m^3
+                "PMC_NUMBER_0_5": 1,  # 1 / m^3
+                "PMC_NUMBER_1_0": 1,  # 1 / m^3
+                "PMC_NUMBER_2_5": 1,  # 1 / m^3
+                "PMC_NUMBER_4_0": 1,  # 1 / m^3
+                "PMC_NUMBER_10_0": 1,  # 1 / m^3
+                "PMC_TYPICAL_PARTICLE_SIZE": 1,  # nm
+                "READ_ERR_T": 1,  # temperature sensor error code (0 if no error)
+                "READ_ERR_RH": 1,  # humidity sensor error code (0 if no error)
+                "READ_ERR_CO2": 1,  # CO2 sensor error code (0 if no error)
+                "READ_ERR_VOC": 1,  # VOC sensor error code (0 if no error)
+                "READ_ERR_PMC": 1,  # PMC sensor error code (0 if no error)
+            }
+
         reg_units = {
                 "T": "°C",  # 
                 "T_F": "F",  # deg F
@@ -70,8 +94,9 @@ try:
 
         try:
             reg_val = int(s.read_register(reg_number))
+            reg_multiplier = reg_multipliers[reg_name]
             reg_unit = reg_units[reg_name]
-            print("{}{}".format(reg_val, reg_unit))
+            print("{}{}".format(reg_multiplier*reg_val, reg_unit))
         except minimalmodbus.IllegalRequestError:
             print("unknown")
             exit(1)
