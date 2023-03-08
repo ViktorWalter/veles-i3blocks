@@ -8,7 +8,7 @@ Tested with:
  * Python 3.9
  * Veles Python library version 0.1.0
 
-[i3blocks_screenshot](i3blocks_screenshot.png)
+![i3blocks_screenshot](i3blocks_screenshot.png)
 
 ## Usage
 
