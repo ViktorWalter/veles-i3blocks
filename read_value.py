@@ -10,7 +10,7 @@ from filelock import Timeout, FileLock
 from math import log10, ceil
 
 # Default values for my sensor (your address will probably differ).
-addr = 109
+addr = 247
 baud = 19200
 
 # Parse parameters.
@@ -25,7 +25,7 @@ else:
 if len(sys.argv) > 2:
     addr = int(sys.argv[2])
 else:
-    addr = 109
+    addr = 247
 
 if len(sys.argv) > 3:
     dev = sys.argv[3]
