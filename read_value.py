@@ -10,7 +10,7 @@ from filelock import Timeout, FileLock
 from math import log10, ceil
 
 # Default values for my sensor (your address will probably differ).
-addr = 247
+addr = 109
 baud = 19200
 
 # Parse parameters.
@@ -25,7 +25,7 @@ else:
 if len(sys.argv) > 2:
     addr = int(sys.argv[2])
 else:
-    addr = 247
+    addr = 109
 
 if len(sys.argv) > 3:
     dev = sys.argv[3]
@@ -34,10 +34,14 @@ else:
 
 # Check validity of parameters.
 read_reg_names = SensorWiredIAQ.input_registers
-if reg_name not in read_reg_names:
+hold_reg_names = SensorWiredIAQ.holding_registers
+if ( reg_name in read_reg_names ):
+    reg_number = SensorWiredIAQ.input_registers[reg_name]
+elif ( reg_name in hold_reg_names ):
+    reg_number = SensorWiredIAQ.holding_registers[reg_name]
+else:
     print("unknown".format(reg_name))
     exit(1)
-reg_number = SensorWiredIAQ.input_registers[reg_name]
 
 # Generate a temp file lock to ensure the device is only opened by a single process at once.
 lock = FileLock("/tmp/veles_{}.lock".format(dev), timeout=1.5)
@@ -74,6 +78,8 @@ try:
                 "READ_ERR_CO2": "",  # CO2 sensor error code (0 if no error)
                 "READ_ERR_VOC": "",  # VOC sensor error code (0 if no error)
                 "READ_ERR_PMC": "",  # PMC sensor error code (0 if no error)
+
+                "LED_BRIGHTNESS": "%", # % of the max. brightness
             }
 
         # The values in the registers are not always stored directly in the units e.g. to improve accuracy.
@@ -100,6 +106,8 @@ try:
                 "READ_ERR_CO2": 1,  # CO2 sensor error code (0 if no error)
                 "READ_ERR_VOC": 1,  # VOC sensor error code (0 if no error)
                 "READ_ERR_PMC": 1,  # PMC sensor error code (0 if no error)
+
+                "LED_BRIGHTNESS": 1,
             }
 
         try:
